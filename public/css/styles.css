@@ -1,0 +1,80 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.header h1 {
+  /*color: #5D4E60;*/
+  color: #06D6A0;
+}
+
+.color-palette {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.color-suggestion {
+  align-items: center;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  height: 50vh;
+  justify-content: flex-end;
+  margin: 5px;
+  width: 18%;
+}
+
+.color-suggestion img {
+  height: 30px;
+  width: 30px;
+}
+
+#color1 {
+  background-color: #A7A5C6;
+}
+
+#color2 {
+  background-color: #8797B2;
+}
+
+#color3 {
+  background-color: #6D8A96;
+}
+
+#color4 {
+  background-color: #5D707F;
+}
+
+#color5 {
+  background-color: #66CED6;
+}
+
+.gen-palette-btn {
+  height: 10vh;
+  justify-content: center;
+  margin: auto;
+  width: 50%;
+}
+
+.save-options {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.save-project {
+  margin-left: 41px;
+}

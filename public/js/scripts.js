@@ -7,7 +7,9 @@ const randomColorMaker = () => {
 
 const selectRandomColor = () => {
   $('.color-suggestion').each((i, element) => {
+
     if($(element).children('img').attr("class") == "unlocked") {
+
       $(element).css("background-color", randomColorMaker());
       $(element).children('p').text(randomColorMaker().toUpperCase());
     }
@@ -28,5 +30,10 @@ const changeLockImage = (e) => {
   }
 }
 
+// const saveAPalette = () => {
+//
+// }
+
 $(generateRandomColorBtn).on('click', selectRandomColor)
 $('.color-suggestion img').on('click', changeLockImage)
+$(paletteSaveBtn).on('click', saveAPalette)

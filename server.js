@@ -5,9 +5,23 @@ const configuration = require("./knexfile")[environment];
 const database = require("knex")(configuration);
 const http = require("http");
 const bodyParser = require('body-parser');
+const cors = require("express-cors");
 
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(cors());
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  next();
+});
 
 app.set('port', process.env.PORT || 3000)
 app.locals.title = 'Palette-Pickr';
@@ -71,7 +85,8 @@ app.get('/api/v1/projects/:id/palettes', (request, response) => {
 });
 
 app.post('/api/v1/projects', (request, response) => {
-  database('projects').insert(
+  database('projects')
+  .insert(
     {project_name: request.body.project_name,},'id')
   .then(projectId => {
     response.status(201).json(projectId)

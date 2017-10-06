@@ -21,25 +21,25 @@ let projectData = [
 
 let paletteData = [
   {palette_name: 'seaPalette',
-  color1: 'FFFFFF',
-  color2: 'FFFFFF',
-  color3: 'FFFFFF',
-  color4: 'FFFFFF',
-  color5: 'FFFFFF'},
+  color1: '#C50742',
+  color2: '#4B98D8',
+  color3: '#4BEBE5',
+  color4: '#268E94',
+  color5: '#8FF159'},
 
   {palette_name: 'gardenPalette',
-  color1: 'FFFFFF',
-  color2: 'FFFFFF',
-  color3: 'FFFFFF',
-  color4: 'FFFFFF',
-  color5: 'FFFFFF'},
+  color1: '#C50742',
+  color2: '#4B98D8',
+  color3: '#4BEBE5',
+  color4: '#268E94',
+  color5: '#8FF159'},
 
   {palette_name: 'outdoorsPalette',
-  color1: 'FFFFFF',
-  color2: 'FFFFFF',
-  color3: 'FFFFFF',
-  color4: 'FFFFFF',
-  color5: 'FFFFFF'}
+  color1: '#C50742',
+  color2: '#4B98D8',
+  color3: '#4BEBE5',
+  color4: '#268E94',
+  color5: '#8FF159'},
 ]
 
 const createProject = (knex, project) => {

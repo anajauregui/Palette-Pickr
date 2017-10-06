@@ -8,11 +8,48 @@ const generateRandomColorBtn = document.querySelector('.gen-palette-btn')
 const paletteSaveBtn = document.querySelector('.save-palette-btn')
 const saveProjectBtn = document.querySelector('.project-save-btn')
 
-function fetchProjects() {
-// const fetchProjects = () => {
+const randomColorMaker = () => {
+   return "#" + (Math.random().toString(16) + '0000000').slice(2, 8)
+}
+
+const selectRandomColor = () => {
+  $('.color-suggestion').each((i, element) => {
+
+    if($(element).children('img').attr("class") == "unlocked") {
+
+      $(element).children('p').text(randomColorMaker().toUpperCase());
+      $(element).css("background-color", $(element).children('p').text());
+    }
+  })
+}
+
+const changeLockImage = (e) => {
+  if($(e.target).attr("class") == "unlocked" ){
+
+    $(e.target).attr("src", "assets/002-locked.svg");
+    $(e.target).toggleClass("locked unlocked");
+
+  } else {
+
+    $(e.target).attr("src", "assets/003-unlocked.svg");
+    $(e.target).toggleClass("locked unlocked");
+  }
+}
+
+const fetchProjects = () => {
    fetch('http://localhost:3000/api/v1/projects')
     .then(response => response.json())
     .then(response => showExistingProjects(response))
+    .catch(error => console.log(error))
+}
+
+const getSingleProject = () => {
+
+  const project_name = $('.project-name').val()
+
+  fetch(`http://localhost:3000/api/v1/projects/:id`)
+    .then(response => response.json())
+    .then(response => console.log(response))
     .catch(error => console.log(error))
 }
 
@@ -32,16 +69,15 @@ const showExistingPalettes = (palettes) => {
     const color3 = palette.color3
     const color4 = palette.color4
     const color5 = palette.color5
-    console.log(palette);
 
     if($('.project-folders').children('div').hasClass(id)) {
-      $(`.${id}`).append(`<section>
+      $(`.${id}`).append(`<section class=${palette.id}>
          <div style="background-color:${color1}; height:40px; width:40px">1</div>
          <div style="background-color:${color2}; height:40px; width:40px">2</div>
          <div style="background-color:${color3}; height:40px; width:40px">3</div>
          <div style="background-color:${color4}; height:40px; width:40px">4</div>
          <div style="background-color:${color5}; height:40px; width:40px">5</div>
-         <img class='trash' style="height:20px; width:20px" src="assets/001-garbage.svg"/>
+         <img id=${palette.id} class='trash' style="height:20px; width:20px" src="assets/001-garbage.svg"/>
        </section>`)
     }
   })
@@ -52,40 +88,11 @@ const showExistingProjects = (projects) => {
     const id = project.id
 
     $('.project-folders')
-    .append(`<div class=${id}><h2>${project.project_name}</h2h></div>`);
+    .append(`<div class='${id} ${project.project_name}'><h2>${project.project_name}</h2h></div>`);
 
     $('.project-drop-menu')
     .append(`<option id=${id} value=${id}>${project.project_name}</option>`);
   })
-}
-
-const randomColorMaker = () => {
-   return "#" + (Math.random().toString(16) + '0000000').slice(2, 8)
-}
-
-const selectRandomColor = () => {
-  $('.color-suggestion').each((i, element) => {
-
-    if($(element).children('img').attr("class") == "unlocked") {
-
-      $(element).children('p').text(randomColorMaker().toUpperCase());
-      $(element).css("background-color", $(element).children('p').text());
-    }
-  })
-}
-
-const changeLockImage = (e) => {
-
-  if($(e.target).attr("class") == "unlocked" ){
-
-    $(e.target).attr("src", "assets/002-locked.svg");
-    $(e.target).toggleClass("locked unlocked");
-
-  } else {
-
-    $(e.target).attr("src", "assets/003-unlocked.svg");
-    $(e.target).toggleClass("locked unlocked");
-  }
 }
 
 const saveAPalette = () => {
@@ -113,7 +120,7 @@ const saveAPalette = () => {
     }
   })
     .then(response => response.json())
-    // .then(response => console.log(response))
+    .then(response => console.log(response))
     .catch(error => console.log(error))
 
     if($('.project-folders').children('div').hasClass(project_id)) {
@@ -124,16 +131,17 @@ const saveAPalette = () => {
              <div style="background-color:${color3}; height:40px; width:40px">3</div>
              <div style="background-color:${color4}; height:40px; width:40px">4</div>
              <div style="background-color:${color5}; height:40px; width:40px">5</div>
+             <img class='trash' style="height:20px; width:20px" src="assets/001-garbage.svg"/>
            </section>`
         )
       }
-}
+  }
 
-function saveProject() {
+const saveProject = () => {
   const project_name = $('.project-name').val()
   // const className = $('.project-name').val().split(' ').join('-').toLowerCase()
 
-  $('.project-folders').append(`<div class=${className}><h2>${project_name}</h2h></div>`);
+  $('.project-folders').append(`<div><h2>${project_name}</h2></div>`);
   $('.project-drop-menu').append(`<option value=${project_name}>${project_name}</option>`);
 
   fetch('http://localhost:3000/api/v1/projects', {
@@ -144,10 +152,24 @@ function saveProject() {
     }
   })
   .then(response => response.json())
-  // .then(response => console.log(response))
+  .then(response => console.log(response))
+}
+
+const deletePalette = (e) => {
+  console.log('clicked');
+  const id = parseInt($(e.target).attr('id'))
+console.log(id);
+  fetch(`http://localhost:3000/api/v1/palettes/${id}`, {
+    method: 'DELETE',
+  })
+    .then(() => $(`${id}`).remove())
+    .catch(error => console.log(error))
+
+  $(e.target).parent('section').remove()
 }
 
 $(generateRandomColorBtn).click(selectRandomColor);
 $('.color-suggestion img').click(changeLockImage);
 $(paletteSaveBtn).click(saveAPalette);
 $(saveProjectBtn).click(saveProject);
+$('.project-folders').on('click', '.trash', deletePalette);

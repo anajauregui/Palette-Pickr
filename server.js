@@ -6,6 +6,9 @@ const database = require("knex")(configuration);
 const http = require("http");
 const bodyParser = require('body-parser');
 const cors = require("express-cors");
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.use(bodyParser.json());
 

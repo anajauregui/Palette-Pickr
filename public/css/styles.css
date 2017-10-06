@@ -89,6 +89,23 @@ body {
 
 .project-folders {
   border-top: 1px solid black;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
   margin: auto;
   width: 90%;
+}
+
+.project-folders div {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  width: 30%
+}
+
+.project-folders div section {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  border: .5px solid black;
 }

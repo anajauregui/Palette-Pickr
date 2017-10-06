@@ -37,7 +37,8 @@ const changeLockImage = (e) => {
 }
 
 const fetchProjects = () => {
-   fetch('http://localhost:3000/api/v1/projects')
+  $('.project-folders').empty()
+   fetch('/api/v1/projects')
     .then(response => response.json())
     .then(response => showExistingProjects(response))
     .catch(error => console.log(error))
@@ -45,7 +46,7 @@ const fetchProjects = () => {
 
 
 const fetchSavedPalettes = () => {
-  fetch('http://localhost:3000/api/v1/palettes')
+  fetch('/api/v1/palettes')
     .then(response => response.json())
     .then(response => showExistingPalettes(response))
     .catch(error => console.log(error))
@@ -95,7 +96,7 @@ const saveAPalette = () => {
   const color5 = $('#color5').children('p').text()
   const project_id = parseInt($('.project-drop-menu option:selected').val())
 
-  fetch(`http://localhost:3000/api/v1/palettes`, {
+  fetch(`/api/v1/palettes`, {
     method: 'POST',
     body: JSON.stringify({
       palette_name,
@@ -112,6 +113,7 @@ const saveAPalette = () => {
   })
     .then(response => response.json())
     .then(response => console.log(response))
+    
     .catch(error => console.log(error))
 
     if($('.project-folders').children('div').hasClass(project_id)) {
@@ -131,27 +133,27 @@ const saveAPalette = () => {
 const saveProject = () => {
   const project_name = $('.project-name').val()
 
-  fetch('http://localhost:3000/api/v1/projects', {
-    method: 'POST',
-    body: JSON.stringify({project_name}),
-    headers: {
-      'Content-Type':'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(response => {
-    $('.project-folders').append(`<div class=${response[0]}><h2>${project_name}</h2></div>`);
-    $('.project-drop-menu').append(`<option value=${response[0]}>${project_name}</option>`);
-  })
 
-  console.log($('.project_folders').children('div'));
+  if(!$('.project-folders').children('div').hasClass(project_name)) {
+    fetch('/api/v1/projects', {
+      method: 'POST',
+      body: JSON.stringify({project_name}),
+      headers: {
+        'Content-Type':'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(response => {
+      $('.project-folders').append(`<div class=${response[0]}><h2>${project_name}</h2></div>`);
+      $('.project-drop-menu').append(`<option value=${response[0]}>${project_name}</option>`);
+      fetchProjects();
+    })
+  }
 }
 
 const deletePalette = (e) => {
-  console.log('clicked');
   const id = parseInt($(e.target).attr('id'))
-console.log(id);
-  fetch(`http://localhost:3000/api/v1/palettes/${id}`, {
+  fetch(`/api/v1/palettes/${id}`, {
     method: 'DELETE',
   })
     .then(() => $(`${id}`).remove())

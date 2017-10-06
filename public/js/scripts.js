@@ -43,15 +43,6 @@ const fetchProjects = () => {
     .catch(error => console.log(error))
 }
 
-const getSingleProject = () => {
-
-  const project_name = $('.project-name').val()
-
-  fetch(`http://localhost:3000/api/v1/projects/:id`)
-    .then(response => response.json())
-    .then(response => console.log(response))
-    .catch(error => console.log(error))
-}
 
 const fetchSavedPalettes = () => {
   fetch('http://localhost:3000/api/v1/palettes')
@@ -139,10 +130,6 @@ const saveAPalette = () => {
 
 const saveProject = () => {
   const project_name = $('.project-name').val()
-  // const className = $('.project-name').val().split(' ').join('-').toLowerCase()
-
-  $('.project-folders').append(`<div><h2>${project_name}</h2></div>`);
-  $('.project-drop-menu').append(`<option value=${project_name}>${project_name}</option>`);
 
   fetch('http://localhost:3000/api/v1/projects', {
     method: 'POST',
@@ -152,7 +139,12 @@ const saveProject = () => {
     }
   })
   .then(response => response.json())
-  .then(response => console.log(response))
+  .then(response => {
+    $('.project-folders').append(`<div class=${response[0]}><h2>${project_name}</h2></div>`);
+    $('.project-drop-menu').append(`<option value=${response[0]}>${project_name}</option>`);
+  })
+
+  console.log($('.project_folders').children('div'));
 }
 
 const deletePalette = (e) => {

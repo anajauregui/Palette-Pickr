@@ -129,22 +129,24 @@ const saveAPalette = () => {
 const saveProject = () => {
   const project_name = $('.project-name').val()
 
-  fetch('/api/v1/projects', {
-    method: 'POST',
-    body: JSON.stringify({project_name}),
-    headers: {
-      'Content-Type':'application/json'
-    }
-  })
-  .then(response => response.json())
-  .then(response => {
-    fetch(`/api/v1/projects/${response[0]}`)
-      .then(response => response.json())
-      .then(response => {
-        $('.project-folders').append(`<div class='${response[0].id} ${response[0].project_name}'><h2>${response[0].project_name}</h2></div>`);
-        $('.project-drop-menu').append(`<option value=${response[0].id}>${response[0].project_name}</option>`);
+  if(!$('.project-folders').children('div').hasClass(project_name)) {
+    fetch('/api/v1/projects', {
+      method: 'POST',
+      body: JSON.stringify({project_name}),
+      headers: {
+        'Content-Type':'application/json'
+      }
+    })
+    .then(response => response.json())
+    .then(response => {
+      fetch(`/api/v1/projects/${response[0]}`)
+        .then(response => response.json())
+        .then(response => {
+          $('.project-folders').append(`<div class='${response[0].id} ${response[0].project_name}'><h2>${response[0].project_name}</h2></div>`);
+          $('.project-drop-menu').append(`<option value=${response[0].id}>${response[0].project_name}</option>`);
+        });
       });
-    });
+  }
 }
 
 

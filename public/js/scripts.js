@@ -20,7 +20,7 @@ const selectRandomColor = () => {
       $(element).children('p').text(randomColorMaker().toUpperCase());
       $(element).css("background-color", $(element).children('p').text());
     }
-  })
+  });
 }
 
 const changeLockImage = (e) => {
@@ -37,13 +37,11 @@ const changeLockImage = (e) => {
 }
 
 const fetchProjects = () => {
-  // $('.project-folders').empty()
    fetch('/api/v1/projects')
     .then(response => response.json())
     .then(response => showExistingProjects(response))
     .catch(error => console.log(error))
 }
-
 
 const fetchSavedPalettes = () => {
   fetch('/api/v1/palettes')
@@ -72,15 +70,14 @@ const showExistingPalettes = (palettes) => {
          <img id=${palette.id} class='trash' style="height:20px; width:20px" src="assets/001-garbage.svg"/>
        </section>`)
     }
-  })
+  });
 }
 
 const showExistingProjects = (projects) => {
   projects.map(project => {
     const id = project.id
 
-    $('.project-folders')
-    .append(`<div class='${id} ${project.project_name}'><h2>${project.project_name}</h2h></div>`);
+    $('.project-folders').append(`<div class='${id} ${project.project_name}'><h2>${project.project_name}</h2h></div>`);
 
     $('.project-drop-menu')
     .append(`<option id=${id} value=${id}>${project.project_name}</option>`);
@@ -113,45 +110,53 @@ const saveAPalette = () => {
   })
     .then(response => response.json())
     .then(response => console.log(response))
-
     .catch(error => console.log(error))
 
-    if($('.project-folders').children('div').hasClass(project_id)) {
-        $(`.${project_id}`).append(
-          `<section>
-             <div style="background-color:${color1}; height:40px; width:40px">1</div>
-             <div style="background-color:${color2}; height:40px; width:40px">2</div>
-             <div style="background-color:${color3}; height:40px; width:40px">3</div>
-             <div style="background-color:${color4}; height:40px; width:40px">4</div>
-             <div style="background-color:${color5}; height:40px; width:40px">5</div>
-             <img class='trash' style="height:20px; width:20px" src="assets/001-garbage.svg"/>
-           </section>`
-        )
-      }
+  if($('.project-folders').children('div').hasClass(project_id)) {
+      $(`.${project_id}`).append(
+        `<section>
+           <div style="background-color:${color1}; height:40px; width:40px">1</div>
+           <div style="background-color:${color2}; height:40px; width:40px">2</div>
+           <div style="background-color:${color3}; height:40px; width:40px">3</div>
+           <div style="background-color:${color4}; height:40px; width:40px">4</div>
+           <div style="background-color:${color5}; height:40px; width:40px">5</div>
+           <img class='trash' style="height:20px; width:20px" src="assets/001-garbage.svg"/>
+         </section>`
+      )
+    }
   }
 
 const saveProject = () => {
   const project_name = $('.project-name').val()
 
+  fetch('/api/v1/projects', {
+    method: 'POST',
+    body: JSON.stringify({project_name}),
+    headers: {
+      'Content-Type':'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(response => {
+    fetch(`/api/v1/projects/${response[0]}`)
+      .then(response => response.json())
+      .then(response => {
+        $('.project-folders').append(`<div class='${response[0].id} ${response[0].project_name}'><h2>${response[0].project_name}</h2></div>`);
+        $('.project-drop-menu').append(`<option value=${response[0].id}>${response[0].project_name}</option>`);
+      });
+    });
+}
 
-  if(!$('.project-folders').children('div').hasClass(project_name)) {
-    fetch('/api/v1/projects', {
-      method: 'POST',
-      body: JSON.stringify({project_name}),
-      headers: {
-        'Content-Type':'application/json'
-      }
-    })
-    .then(response => response.json())
-    .then(response => {
-      $('.project-folders').append(`<div class=${response[0]}><h2>${project_name}</h2></div>`);
-      $('.project-drop-menu').append(`<option value=${response[0]}>${project_name}</option>`);
-      $('.project-folders').empty();
-      fetchProjects();
-      fetchSavedPalettes();
-    })
-    // fetchSavedPalettes();
-  }
+
+const deleteProject = (e) => {
+  const id = parseInt($(e.target).attr('class'))
+
+  fetch(`/api/v1/projects/${id}`, {
+    method: 'DELETE'
+  })
+  .then(() => $(`${id}`).remove());
+
+  $(e.target).remove();
 }
 
 const deletePalette = (e) => {
@@ -162,7 +167,7 @@ const deletePalette = (e) => {
     .then(() => $(`${id}`).remove())
     .catch(error => console.log(error))
 
-  $(e.target).parent('section').remove()
+  $(e.target).parent('section').remove();
 }
 
 $(generateRandomColorBtn).click(selectRandomColor);
@@ -170,3 +175,4 @@ $('.color-suggestion img').click(changeLockImage);
 $(paletteSaveBtn).click(saveAPalette);
 $(saveProjectBtn).click(saveProject);
 $('.project-folders').on('click', '.trash', deletePalette);
+$('.project-folders').on('click', 'div', deleteProject);

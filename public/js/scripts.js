@@ -37,7 +37,7 @@ const changeLockImage = (e) => {
 }
 
 const fetchProjects = () => {
-  $('.project-folders').empty()
+  // $('.project-folders').empty()
    fetch('/api/v1/projects')
     .then(response => response.json())
     .then(response => showExistingProjects(response))
@@ -113,7 +113,7 @@ const saveAPalette = () => {
   })
     .then(response => response.json())
     .then(response => console.log(response))
-    
+
     .catch(error => console.log(error))
 
     if($('.project-folders').children('div').hasClass(project_id)) {
@@ -146,8 +146,11 @@ const saveProject = () => {
     .then(response => {
       $('.project-folders').append(`<div class=${response[0]}><h2>${project_name}</h2></div>`);
       $('.project-drop-menu').append(`<option value=${response[0]}>${project_name}</option>`);
+      $('.project-folders').empty();
       fetchProjects();
+      fetchSavedPalettes();
     })
+    // fetchSavedPalettes();
   }
 }
 

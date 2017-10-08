@@ -122,17 +122,18 @@ app.delete('/api/v1/projects/:id', (request, response) => {
   database('projects')
   .where('id', request.params.id)
   .delete()
-  .then(response => response.status(200).json())
+  .then(response => response.sendStatus(204).json(response))
   .catch(error => {
     response.status(500).json({ error })
   });
 });
 
+
 app.delete('/api/v1/palettes/:id', (request, response) => {
   database('palettes')
   .where('id', request.params.id)
   .delete()
-  .then(response => response.status(200).json())
+  .then(response => response.sendstatus(204).json(response))
   .catch(error => {
     response.status(500).json({ error })
   });

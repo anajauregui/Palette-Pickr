@@ -18,8 +18,8 @@ body {
 }
 
 .header h1 {
-  /*color: #5D4E60;*/
   color: #06D6A0;
+  font-size: 2.5em;
 }
 
 .color-palette {
@@ -68,6 +68,7 @@ body {
   background: none;
   border: 1px solid;
   border-radius: 10px;
+  font-size: 1.5em;
   height: 10vh;
   justify-content: center;
   margin: 15px auto;
@@ -81,12 +82,29 @@ body {
   margin: 30px;
 }
 
-.save-project {
-  margin-left: 100px;
+.project-drop-menu {
+  font-size: 0.90em;
+  height: 30px;
+  width: 150px;
 }
 
 .save-palette {
   margin-bottom: 20px;
+}
+
+.palette-name {
+  height: 25px;
+  width: 175px;
+  margin-left: 15px;
+}
+
+.save-project {
+  margin-left: 170px;
+}
+
+.project-name {
+  height: 25px;
+  width: 175px;
 }
 
 .project-folders {
@@ -96,7 +114,7 @@ body {
   flex-wrap: wrap;
   /*justify-content: center;*/
   margin: auto;
-  width: 100%;
+  width: 90%;
 }
 
 .project-folders div {
@@ -109,7 +127,7 @@ body {
   width: 90%
 }
 
-.project-folders div section {
+.project-folders .color-group {
   align-items: center;
   display: flex;
   flex-direction: row;

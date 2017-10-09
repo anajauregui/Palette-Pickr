@@ -60,14 +60,14 @@ const showExistingPalettes = (palettes) => {
     const color5 = palette.color5
 
     if($('.project-folders').children('div').hasClass(id)) {
-      $(`.${id}`).append(`<section class=${palette.id}>
-        <div style="height:60px; width:100px">${name}</div>
-        <div style="background-color:${color1}; height:60px; width:100px">${color1}</div>
-        <div style="background-color:${color2}; height:60px; width:100px">${color2}</div>
-        <div style="background-color:${color3}; height:60px; width:100px">${color3}</div>
-        <div style="background-color:${color4}; height:60px; width:100px">${color4}</div>
-        <div style="background-color:${color5}; height:60px; width:100px">${color5}</div>
-        <img id=${palette.id} class='trash' style="height:50px; width:50px" src="assets/001-garbage.svg"/>
+      $(`.${id}`).append(`<section class='${palette.id} color-group'>
+        <div class="color-group-name" style="height:60px; width:100px">${name}</div>
+        <div id="hue1" style="background-color:${color1}; height:60px; width:100px">${color1}</div>
+        <div id="hue2" style="background-color:${color2}; height:60px; width:100px">${color2}</div>
+        <div id="hue3" style="background-color:${color3}; height:60px; width:100px">${color3}</div>
+        <div id="hue4" style="background-color:${color4}; height:60px; width:100px">${color4}</div>
+        <div id="hue5" style="background-color:${color5}; height:60px; width:100px">${color5}</div>
+        <img id=${palette.id} class='trash' style="height:40px; width:40px" src="assets/001-garbage.svg"/>
        </section>`)
      }
   });
@@ -76,13 +76,14 @@ const showExistingPalettes = (palettes) => {
 const showExistingProjects = (projects) => {
   projects.map(project => {
     const id = project.id
+    const name = project.project_name
 
-    $('.project-folders').append(`<div class='${id} ${project.project_name}'>
-    <h2>${project.project_name}</h2>
+    $('.project-folders').append(`<div class='${id} ${name}'>
+    <h2>${name}</h2>
     </div>`);
 
     $('.project-drop-menu')
-    .append(`<option id=${id} value=${id}>${project.project_name}</option>`);
+    .append(`<option id=${id} value=${id}>${name}</option>`);
   });
   fetchSavedPalettes();
 }
@@ -119,14 +120,14 @@ if($('.project-folders').children('div').hasClass(project_id)) {
       .then(response => response.json())
       .then(response => {
         $(`.${project_id}`).append(
-          `<section>
-            <div style="height:60px; width:100px">${palette_name}</div>
-            <div style="background-color:${color1}; height:60px; width:100px">${color1}</div>
-            <div style="background-color:${color2}; height:60px; width:100px">${color2}</div>
-            <div style="background-color:${color3}; height:60px; width:100px">${color3}</div>
-            <div style="background-color:${color4}; height:60px; width:100px">${color4}</div>
-            <div style="background-color:${color5}; height:60px; width:100px">${color5}</div>
-            <img class='trash' style="height:50px; width:50px" src="assets/001-garbage.svg"/>
+          `<section class="color-group">
+            <div class="color-group-name" style="height:60px; width:100px">${palette_name}</div>
+            <div id="hue1" style="background-color:${color1}; height:60px; width:100px">${color1}</div>
+            <div id="hue2" style="background-color:${color2}; height:60px; width:100px">${color2}</div>
+            <div id="hue3" style="background-color:${color3}; height:60px; width:100px">${color3}</div>
+            <div id="hue4" style="background-color:${color4}; height:60px; width:100px">${color4}</div>
+            <div id="hue5" style="background-color:${color5}; height:60px; width:100px">${color5}</div>
+            <img class='trash' style="height:40px; width:40px" src="assets/001-garbage.svg"/>
            </section>`
         )
       })
@@ -184,6 +185,13 @@ const deletePalette = (e) => {
     .catch(error => console.log(error))
 
   $(e.target).parent('section').remove();
+
+}
+
+//on click of '.color-group' colors of palette should populate the generator
+// #color1 style="background-color: "
+
+const pullSavedColorsToGenerator = () => {
 
 }
 

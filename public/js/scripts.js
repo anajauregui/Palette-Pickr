@@ -163,18 +163,18 @@ const saveProject = () => {
 
 {/* <img style="height:20px; width:20px" src='assets/circle.svg' /> */}
 
-const deleteProject = (e) => {
-  const id = parseInt($(e.target).attr('class'))
-
-  fetch(`/api/v1/projects/${id}`, {
-    method: 'DELETE'
-  })
-    .then(() => {
-      $(`${id}`).remove();
-      $(e.target).remove();
-    })
-    .catch(error => console.log(error))
-}
+// const deleteProject = (e) => {
+//   const id = parseInt($(e.target).attr('class'))
+//
+//   fetch(`/api/v1/projects/${id}`, {
+//     method: 'DELETE'
+//   })
+//     .then(() => {
+//       $(`${id}`).remove();
+//       $(e.target).remove();
+//     })
+//     .catch(error => console.log(error))
+// }
 
 const deletePalette = (e) => {
   const id = parseInt($(e.target).attr('id'))
@@ -188,10 +188,29 @@ const deletePalette = (e) => {
 
 }
 
-//on click of '.color-group' colors of palette should populate the generator
-// #color1 style="background-color: "
 
-const pullSavedColorsToGenerator = () => {
+const sendSavedColorsToGenerator = (e) => {
+  const genPaletteColor1 = $('#color1')
+  const genPaletteColor2 = $('#color2')
+  const genPaletteColor3 = $('#color3')
+  const genPaletteColor4 = $('#color4')
+  const genPaletteColor5 = $('#color5')
+  const targetDivs = $.makeArray($(e.target).parent().children())
+
+  genPaletteColor1.css('background-color', $(targetDivs[1]).text())
+  genPaletteColor1.children('p').text($(targetDivs[1]).text())
+
+  genPaletteColor2.css('background-color', $(targetDivs[2]).text())
+  genPaletteColor2.children('p').text($(targetDivs[2]).text())
+
+  genPaletteColor3.css('background-color', $(targetDivs[3]).text())
+  genPaletteColor3.children('p').text($(targetDivs[3]).text())
+
+  genPaletteColor4.css('background-color', $(targetDivs[4]).text())
+  genPaletteColor4.children('p').text($(targetDivs[4]).text())
+
+  genPaletteColor5.css('background-color', $(targetDivs[5]).text())
+  genPaletteColor5.children('p').text($(targetDivs[5]).text())
 
 }
 
@@ -200,4 +219,5 @@ $('.color-suggestion img').click(changeLockImage);
 $(paletteSaveBtn).click(saveAPalette);
 $(saveProjectBtn).click(saveProject);
 $('.project-folders').on('click', '.trash', deletePalette);
-$('.project-folders').on('click', 'div', deleteProject);
+// $('.project-folders').on('click', 'div', deleteProject);
+$('.project-folders').on('click', '.color-group', sendSavedColorsToGenerator)

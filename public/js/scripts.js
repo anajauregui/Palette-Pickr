@@ -161,21 +161,6 @@ const saveProject = () => {
   }
 }
 
-{/* <img style="height:20px; width:20px" src='assets/circle.svg' /> */}
-
-// const deleteProject = (e) => {
-//   const id = parseInt($(e.target).attr('class'))
-//
-//   fetch(`/api/v1/projects/${id}`, {
-//     method: 'DELETE'
-//   })
-//     .then(() => {
-//       $(`${id}`).remove();
-//       $(e.target).remove();
-//     })
-//     .catch(error => console.log(error))
-// }
-
 const deletePalette = (e) => {
   const id = parseInt($(e.target).attr('id'))
   fetch(`/api/v1/palettes/${id}`, {
@@ -219,5 +204,4 @@ $('.color-suggestion img').click(changeLockImage);
 $(paletteSaveBtn).click(saveAPalette);
 $(saveProjectBtn).click(saveProject);
 $('.project-folders').on('click', '.trash', deletePalette);
-// $('.project-folders').on('click', 'div', deleteProject);
 $('.project-folders').on('click', '.color-group', sendSavedColorsToGenerator)

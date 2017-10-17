@@ -8,6 +8,15 @@ const bodyParser = require('body-parser');
 const cors = require("express-cors");
 const path = require('path');
 
+const requireHTTPS = (req, res, next) => {
+  if (req.headers['x-forwarded-proto'] != 'https') {
+    return res.redirect('https://' + req.get('host') + req.url);
+  }
+  next();
+};
+
+app.use(requireHTTPS);
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use(bodyParser.json());
@@ -127,7 +136,6 @@ app.delete('/api/v1/projects/:id', (request, response) => {
     response.status(500).json({ error })
   });
 });
-
 
 app.delete('/api/v1/palettes/:id', (request, response) => {
   database('palettes')
